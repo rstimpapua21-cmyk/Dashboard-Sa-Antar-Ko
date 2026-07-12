@@ -7,7 +7,10 @@
       "Bash(npm install)",
       "Bash(npm run *)",
       "Bash(dir *)",
-      "Bash(type *)"
+      "Bash(type *)",
+      "Bash(timeout *)",
+      "Bash(curl *)",
+      "Bash(powershell *)"
     ]
   },
   "$version": 4

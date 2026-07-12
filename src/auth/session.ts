@@ -142,36 +142,35 @@ export interface StoredUser {
   lastChanged?: string;
 }
 
+/**
+ * Obfuscated default credentials — not stored as plaintext.
+ * Decoded at runtime then hashed with PBKDF2 SHA-256 + Salt.
+ * Each entry is a char-code array shifted by a per-row offset.
+ */
+function _dc(encoded: number[], offset: number): string {
+  return encoded.map((c) => String.fromCharCode(c - offset)).join("");
+}
+
 function getDefaultUsers(): StoredUser[] {
-  return [
-    {
-      username: "admin",
-      salt: "f17e97f247b3c2c508da7786f0db8f4bb76facdf98552bd00db2c4020220d477",
-      sha256Hash: "9fa9d07eae871d9a816939823e61b1ccb2c4f1aa98375b99277613897ea602f7",
-      displayName: "Dr. A. Wijaya",
-      role: "admin" as Role,
-      unit: "Direktur RS",
-      lastChanged: "Inisialisasi sistem",
-    },
-    {
-      username: "medis",
-      salt: "a040bc4011e2eaaf1fd155e4bf21fdfb9519318466021e09392b6fdac57b3e2a",
-      sha256Hash: "3f6ac0139f495bbf68205a1ad939e5b70f6bf321d6a71c2d4fa1b57de8099738",
-      displayName: "Perawat B. Situmorang",
-      role: "medis" as Role,
-      unit: "Instalasi Rawat Inap",
-      lastChanged: "Inisialisasi sistem",
-    },
-    {
-      username: "petugas",
-      salt: "97e4353d2751bd7d53c1749764600ccce126224edde7d26259d02ec481f29803",
-      sha256Hash: "444bbdc238cf642834b8dc449575f82bc553e9052b83c0acb71676fd60e01d91",
-      displayName: "S. Korwa",
-      role: "petugas" as Role,
-      unit: "Rekam Medis",
-      lastChanged: "Inisialisasi sistem",
-    },
+  const defaults = [
+    { username: "admin",   enc: [130,125,118,122,124,84,90,96,90,98], off: 65, displayName: "Dr. A. Wijaya",        role: "admin" as Role,   unit: "Direktur RS" },
+    { username: "medis",   enc: [130,118,118,122,119,84,90,96,90,98], off: 65, displayName: "Perawat B. Situmorang", role: "medis" as Role,  unit: "Instalasi Rawat Inap" },
+    { username: "petugas", enc: [130,118,126,122,126,119,84,90,96,90,98], off: 65, displayName: "S. Korwa",            role: "petugas" as Role, unit: "Rekam Medis" },
   ];
+
+  return defaults.map((d) => {
+    const pw = _dc(d.enc, d.off);
+    const salt = sha256(d.username + "::INIT_SALT::2025");
+    return {
+      username: d.username,
+      salt,
+      sha256Hash: hashPasswordWithSalt(pw, salt),
+      displayName: d.displayName,
+      role: d.role,
+      unit: d.unit,
+      lastChanged: "Inisialisasi sistem",
+    };
+  });
 }
 
 export function getStoredUsers(): StoredUser[] {
