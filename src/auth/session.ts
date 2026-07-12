@@ -153,9 +153,9 @@ function _dc(encoded: number[], offset: number): string {
 
 function getDefaultUsers(): StoredUser[] {
   const defaults = [
-    { username: "admin",   enc: [130,125,118,122,124,84,90,96,90,98], off: 65, displayName: "Dr. A. Wijaya",        role: "admin" as Role,   unit: "Direktur RS" },
-    { username: "medis",   enc: [130,118,118,122,119,84,90,96,90,98], off: 65, displayName: "Perawat B. Situmorang", role: "medis" as Role,  unit: "Instalasi Rawat Inap" },
-    { username: "petugas", enc: [130,118,126,122,126,119,84,90,96,90,98], off: 65, displayName: "S. Korwa",            role: "petugas" as Role, unit: "Rekam Medis" },
+    { username: "admin",   enc: [130,125,118,122,124,84,90,96,90,98], off: 65, displayName: "Administrator",        role: "admin" as Role,   unit: "IT" },
+    { username: "medis",   enc: [130,118,118,122,119,84,90,96,90,98], off: 65, displayName: "Perawat", role: "medis" as Role,  unit: "Instalasi Rawat Inap" },
+    { username: "petugas", enc: [130,118,126,122,126,119,84,90,96,90,98], off: 65, displayName: "Operator",            role: "petugas" as Role, unit: "Rekam Medis" },
   ];
 
   return defaults.map((d) => {
