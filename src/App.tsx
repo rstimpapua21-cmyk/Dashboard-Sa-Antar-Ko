@@ -18,7 +18,7 @@ import {
 } from "./data/patientData";
 import { can, ROLES, type Role } from "./auth/rbac";
 import {
-  loadSession, clearSession, appendAudit,
+  loadSession, clearSession, appendAudit, syncCredentialsFromSheet,
   type Session,
 } from "./auth/session";
 import { protect } from "./utils/mask";
@@ -544,6 +544,7 @@ export default function App() {
 
   useEffect(() => {
     loadData();
+    syncCredentialsFromSheet();
     if (!autoRefresh) return;
     const interval = setInterval(() => loadData(true, true), 60000);
     return () => clearInterval(interval);

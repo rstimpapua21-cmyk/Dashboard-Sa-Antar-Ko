@@ -193,6 +193,49 @@ export function getStoredUsers(): StoredUser[] {
   }
 }
 
+/**
+ * Sync credentials from Google Sheet "Users" tab into localStorage.
+ * Sheet credentials take precedence — this enables cross-device password persistence.
+ *
+ * Returns: { synced: number, total: number } — how many users were updated from the sheet.
+ */
+export async function syncCredentialsFromSheet(): Promise<{ synced: number; total: number; source: string }> {
+  const { fetchCredentials } = await import("../data/credentials");
+  const sheetUsers = await fetchCredentials();
+
+  if (!sheetUsers || sheetUsers.length === 0) {
+    return { synced: 0, total: getStoredUsers().length, source: "local" };
+  }
+
+  const localUsers = getStoredUsers();
+  let synced = 0;
+
+  // Merge: sheet credential overrides local for matching usernames
+  for (const su of sheetUsers) {
+    const idx = localUsers.findIndex(
+      (lu) => lu.username.toLowerCase() === su.username.toLowerCase()
+    );
+    if (idx !== -1) {
+      // Sheet has newer data → override local salt + hash
+      localUsers[idx] = { ...localUsers[idx], salt: su.salt, sha256Hash: su.sha256Hash, lastChanged: su.lastChanged || localUsers[idx].lastChanged };
+      synced++;
+    } else {
+      // New user from sheet → add to local
+      localUsers.push(su);
+      synced++;
+    }
+  }
+
+  saveStoredUsers(localUsers);
+  appendAudit({
+    user: "System",
+    action: "Sync Credential Sheet",
+    detail: `${synced} akun diperbarui dari Google Sheet "Users" (cross-device sync)`,
+  });
+
+  return { synced, total: localUsers.length, source: "sheet" };
+}
+
 export function saveStoredUsers(users: StoredUser[]): void {
   try {
     localStorage.setItem(USER_STORE_KEY, JSON.stringify(users));

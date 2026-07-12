@@ -20,6 +20,7 @@ import {
   deleteUser,
   adminResetUserPassword,
   adminChangeUserRole,
+  syncCredentialsFromSheet,
 } from "./session";
 import { useToast } from "../components/Toast";
 
@@ -65,6 +66,7 @@ export default function SecurityPanel({ session, onClose, onLogout }: SecurityPa
   const [showNew, setShowNew] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [pwLoading, setPwLoading] = useState(false);
+  const [syncLoading, setSyncLoading] = useState(false);
 
   // Profile edit state
   const [profileName, setProfileName] = useState(session.user.displayName);
@@ -128,6 +130,23 @@ export default function SecurityPanel({ session, onClose, onLogout }: SecurityPa
       resetToFactoryCredentials();
       refreshUsers();
       toast.warning("Sandi Pabrik Dipulihkan", "Semua akun bawaan telah dikembalikan ke sandi awal & dihash ulang SHA-256.");
+    }
+  }
+
+  async function handleSyncSheet() {
+    setSyncLoading(true);
+    try {
+      const result = await syncCredentialsFromSheet();
+      refreshUsers();
+      if (result.source === "sheet") {
+        toast.success("Credential Sync Berhasil", `${result.synced} akun diperbarui dari Google Sheet — password sekarang sync antar perangkat!`);
+      } else {
+        toast.info("Credential Sync: Lokal", "Sheet \"Users\" belum dikonfigurasi (gid=0). Gunakan localStorage default credentials.");
+      }
+    } catch {
+      toast.error("Credential Sync Gagal", "Tidak dapat mengambil data dari Google Sheet. Periksa jaringan atau konfigurasi gid.");
+    } finally {
+      setSyncLoading(false);
     }
   }
 
@@ -463,6 +482,14 @@ export default function SecurityPanel({ session, onClose, onLogout }: SecurityPa
 
               <div className="pt-3 border-t border-gray-100 flex items-center justify-between">
                 <span className="text-[11px] text-gray-400">Lupa sandi akun Anda?</span>
+                <button
+                  type="button"
+                  onClick={handleSyncSheet}
+                  disabled={syncLoading}
+                  className="text-[11px] text-blue-600 hover:underline font-semibold flex items-center gap-1 disabled:opacity-50"
+                >
+                  <RefreshCw size={11} className={syncLoading ? "animate-spin" : ""} /> {syncLoading ? "Syncing..." : "Sync dari Sheet (Cross-Device)"}
+                </button>
                 <button
                   type="button"
                   onClick={handleResetFactory}
