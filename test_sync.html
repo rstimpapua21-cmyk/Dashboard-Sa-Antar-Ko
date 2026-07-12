@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Sync Google Sheets</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .result-box {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .success { border-left: 4px solid #34a853; }
+        .error { border-left: 4px solid #ea4335; }
+        .loading { border-left: 4px solid #fbbc04; }
+        pre {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 12px;
+        }
+        button {
+            background: #4285f4;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 5px;
+        }
+        button:hover { background: #3367d6; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Test Sync Google Sheets</h1>
+    <p>Testing koneksi ke Google Sheets dan menampilkan data mentah</p>
+    
+    <div>
+        <button onclick="testJSONP()">Test JSONP</button>
+        <button onclick="testGviz()">Test gviz CSV</button>
+        <button onclick="testHTML()">Test HTML Parse</button>
+        <button onclick="testAll()">Test Semua Metode</button>
+    </div>
+    
+    <div id="results"></div>
+
+    <script>
+        const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSv31iXfAkwY8c6Tsi9MvvT1ABR8hxQlI-3rmTCYC9z98D4NklxzocQD2o5AmBvjE25qxYMsQTY36qE';
+        
+        function addResult(title, content, type = 'success') {
+            const div = document.createElement('div');
+            div.className = `result-box ${type}`;
+            div.innerHTML = `<h3>${title}</h3><pre>${content}</pre>`;
+            document.getElementById('results').appendChild(div);
+        }
+        
+        function clearResults() {
+            document.getElementById('results').innerHTML = '';
+        }
+        
+        // Test JSONP Method
+        async function testJSONP() {
+            clearResults();
+            addResult('Testing JSONP...', 'Loading data via JSONP...', 'loading');
+            
+            try {
+                const data = await fetchViaJSONP();
+                clearResults();
+                addResult(
+                    '✓ JSONP Success', 
+                    `Records: ${data.length}\n\nFirst record:\n${JSON.stringify(data[0], null, 2)}\n\nHeaders: ${Object.keys(data[0]).join(', ')}`,
+                    'success'
+                );
+            } catch (error) {
+                clearResults();
+                addResult('✗ JSONP Failed', error.message, 'error');
+            }
+        }
+        
+        function fetchViaJSONP() {
+            return new Promise((resolve, reject) => {
+                const callbackName = 'testCallback_' + Date.now();
+                const timeout = setTimeout(() => {
+                    cleanup();
+                    reject(new Error('JSONP timeout (15 seconds)'));
+                }, 15000);
+                
+                function cleanup() {
+                    clearTimeout(timeout);
+                    delete window[callbackName];
+                    const script = document.getElementById('test-jsonp-script');
+                    if (script) script.remove();
+                }
+                
+                window[callbackName] = function(data) {
+                    try {
+                        console.log('JSONP raw data:', data);
+                        if (data && data.table) {
+                            const converted = convertGoogleVizData(data.table);
+                            cleanup();
+                            resolve(converted);
+                        } else {
+                            cleanup();
+                            reject(new Error('Invalid data structure: ' + JSON.stringify(data).substring(0, 200)));
+                        }
+                    } catch (e) {
+                        cleanup();
+                        reject(e);
+                    }
+                };
+                
+                const script = document.createElement('script');
+                script.id = 'test-jsonp-script';
+                script.src = `${SHEET_URL}/gviz/tq?tqx=responseHandler:${callbackName}&gid=965791667`;
+                script.onerror = () => {
+                    cleanup();
+                    reject(new Error('Script load error'));
+                };
+                document.head.appendChild(script);
+            });
+        }
+        
+        function convertGoogleVizData(table) {
+            const headers = table.cols.map(col => col.label || col.id);
+            const data = [];
+            
+            for (let i = 0; i < table.rows.length; i++) {
+                const row = table.rows[i];
+                if (!row.c) continue;
+                
+                const record = {};
+                let hasData = false;
+                
+                for (let j = 0; j < headers.length; j++) {
+                    const cell = row.c[j];
+                    let value = '';
+                    
+                    if (cell) {
+                        if (cell.f !== undefined) {
+                            value = cell.f;
+                        } else if (cell.v !== undefined) {
+                            value = String(cell.v);
+                        }
+                    }
+                    
+                    record[headers[j].trim()] = value.trim();
+                    if (value.trim()) hasData = true;
+                }
+                
+                if (hasData) {
+                    data.push(record);
+                }
+            }
+            
+            return data;
+        }
+        
+        // Test gviz CSV Method
+        async function testGviz() {
+            clearResults();
+            addResult('Testing gviz CSV...', 'Loading data via gviz endpoint...', 'loading');
+            
+            try {
+                const url = `${SHEET_URL}/gviz/tq?tqx=out:csv&gid=965791667`;
+                const response = await fetch(url);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+                
+                const csvText = await response.text();
+                const lines = csvText.split('\n').filter(l => l.trim());
+                
+                clearResults();
+                addResult(
+                    '✓ gviz CSV Success',
+                    `Response length: ${csvText.length} chars\nLines: ${lines.length}\n\nFirst 500 chars:\n${csvText.substring(0, 500)}`,
+                    'success'
+                );
+            } catch (error) {
+                clearResults();
+                addResult('✗ gviz CSV Failed', error.message, 'error');
+            }
+        }
+        
+        // Test HTML Parse Method
+        async function testHTML() {
+            clearResults();
+            addResult('Testing HTML Parse...', 'Loading data via HTML parsing...', 'loading');
+            
+            try {
+                const url = `${SHEET_URL}/pubhtml?gid=965791667&single=true`;
+                const response = await fetch(url);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+                
+                const html = await response.text();
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const tables = doc.querySelectorAll('table');
+                
+                clearResults();
+                addResult(
+                    '✓ HTML Parse Success',
+                    `HTML length: ${html.length} chars\nTables found: ${tables.length}\nFirst table rows: ${tables[0] ? tables[0].querySelectorAll('tr').length : 0}`,
+                    'success'
+                );
+            } catch (error) {
+                clearResults();
+                addResult('✗ HTML Parse Failed', error.message, 'error');
+            }
+        }
+        
+        // Test all methods
+        async function testAll() {
+            clearResults();
+            addResult('Testing all methods...', 'Please wait...', 'loading');
+            
+            const results = [];
+            
+            // Test JSONP
+            try {
+                const data = await fetchViaJSONP();
+                results.push(`✓ JSONP: ${data.length} records`);
+            } catch (e) {
+                results.push(`✗ JSONP: ${e.message}`);
+            }
+            
+            // Test gviz
+            try {
+                const url = `${SHEET_URL}/gviz/tq?tqx=out:csv&gid=965791667`;
+                const response = await fetch(url);
+                const text = await response.text();
+                results.push(`✓ gviz CSV: ${text.length} chars`);
+            } catch (e) {
+                results.push(`✗ gviz CSV: ${e.message}`);
+            }
+            
+            // Test HTML
+            try {
+                const url = `${SHEET_URL}/pubhtml?gid=965791667&single=true`;
+                const response = await fetch(url);
+                const text = await response.text();
+                results.push(`✓ HTML: ${text.length} chars`);
+            } catch (e) {
+                results.push(`✗ HTML: ${e.message}`);
+            }
+            
+            clearResults();
+            addResult('Test Results', results.join('\n'), 'success');
+        }
+    </script>
+</body>
+</html>
