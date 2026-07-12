@@ -1,0 +1,106 @@
+================================================================================
+  📊 DASHBOARD SA ANTAR KO - CARA PENGGUNAAN
+================================================================================
+
+✅ DASHBOARD SUDAH SIAP DIGUNAKAN!
+
+Data dari Google Sheets sudah berhasil disinkronkan dan di-embed ke dashboard.
+Total: 1989 records pasien
+
+================================================================================
+  🚀 CARA MEMBUKA DASHBOARD
+================================================================================
+
+CARA 1: DOUBLE-CLICK (TERMUDAH)
+---------------------------------
+1. Double-click file: sa_ntarko.html
+2. Dashboard akan terbuka di browser
+3. Data sudah ada, tidak perlu internet!
+
+CARA 2: DRAG & DROP
+---------------------------------
+1. Buka browser (Chrome/Firefox/Edge)
+2. Drag file sa_ntarko.html ke browser
+3. Dashboard siap digunakan!
+
+================================================================================
+  🔄 CARA UPDATE DATA TERBARU DARI GOOGLE SHEETS
+================================================================================
+
+Jika ada data baru di Google Sheets, ikuti langkah ini:
+
+CARA MUDAH (RECOMMENDED):
+---------------------------------
+1. Double-click file: sync_dashboard.bat
+2. Tunggu proses download & update (±30 detik)
+3. Buka ulang sa_ntarko.html di browser
+4. Data terbaru sudah tersedia!
+
+CARA MANUAL (LEWAT COMMAND LINE):
+---------------------------------
+1. Buka Command Prompt di folder ini
+2. Jalankan perintah:
+   
+   python sync_data.py
+   python embed_data.py  
+   python update_dashboard.py
+
+3. Buka ulang sa_ntarko.html
+
+================================================================================
+  📁 FILE-FILE PENTING
+================================================================================
+
+✅ sa_ntarko.html          - Dashboard utama (SIAP DIGUNAKAN)
+✅ sync_dashboard.bat      - Script untuk update data otomatis
+✅ data.csv               - Backup data mentah dari Google Sheets
+✅ embedded_data.json     - Backup data dalam format JSON
+✅ README.md              - Dokumentasi lengkap
+
+================================================================================
+  🔧 TROUBLESHOOTING
+================================================================================
+
+❓ Dashboard tidak muncul?
+   → Pastikan browser support JavaScript (Chrome/Firefox/Edge)
+   → Coba browser lain
+
+❓ Data tidak tampil?
+   → Tekan F12 untuk buka Console
+   → Lihat error message
+   → Jalankan sync_dashboard.bat
+
+❓ Script sync gagal?
+   → Pastikan ada koneksi internet
+   → Cek Python sudah install: ketik "python --version"
+   → Coba jalankan manual: python sync_data.py
+
+❓ Data lama/tidak update?
+   → Jalankan sync_dashboard.bat
+   → Refresh browser (Ctrl+R atau F5)
+
+================================================================================
+  📞 BANTUAN LEBIH LANJUT
+================================================================================
+
+Baca file: README.md untuk dokumentasi lengkap
+
+================================================================================
+  ✨ FITUR DASHBOARD
+================================================================================
+
+✓ Monitoring data pasien pulang
+✓ Filter berdasarkan status & tanggal
+✓ Grafik trend harian
+✓ Distribusi status
+✓ Tabel detail data
+✓ Search & export
+✓ Auto-refresh (jika pakai web server)
+✓ Data embedded (bisa offline!)
+
+================================================================================
+
+Last Update: 2026-07-08 18:38:13
+Total Records: 1989
+
+================================================================================
