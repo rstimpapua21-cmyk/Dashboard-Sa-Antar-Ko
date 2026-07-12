@@ -10,9 +10,9 @@ interface LoginGateProps {
 }
 
 const DEMO_ACCOUNTS = [
-  { username: "admin", password: "Admin@2025", role: "admin" as const },
-  { username: "medis", password: "Medis@2025", role: "medis" as const },
-  { username: "petugas", password: "Petugas@2025", role: "petugas" as const },
+  { username: "admin", role: "admin" as const },
+  { username: "medis", role: "medis" as const },
+  { username: "petugas", role: "petugas" as const },
 ];
 
 export default function LoginGate({ onLogin, initialMessage, onCancel }: LoginGateProps) {
@@ -39,9 +39,9 @@ export default function LoginGate({ onLogin, initialMessage, onCancel }: LoginGa
     }, 450);
   }
 
-  function fillDemo(acc: { username: string; password: string }) {
+  function fillDemo(acc: { username: string }) {
     setUsername(acc.username);
-    setPassword(acc.password);
+    setPassword("");
     setError(null);
   }
 
@@ -139,12 +139,12 @@ export default function LoginGate({ onLogin, initialMessage, onCancel }: LoginGa
               onClick={() => setShowDemo((s) => !s)}
               className="text-xs text-blue-600 font-bold hover:underline flex items-center gap-1"
             >
-              {showDemo ? "Sembunyikan kredensial demo" : "Tampilkan kredensial akun bawaan"}
+              {showDemo ? "Sembunyikan daftar akun bawaan" : "Tampilkan daftar akun bawaan"}
             </button>
             {showDemo && (
               <div className="mt-3 space-y-2">
                 <p className="text-[11px] text-gray-500 font-medium">
-                  Catatan: Semua sandi diverifikasi menggunakan enkripsi <b>PBKDF2 SHA-256 + Salt</b>. Setelah masuk, Anda dapat mengganti sandi melalui menu Keamanan.
+                  Catatan: Semua sandi diverifikasi menggunakan enkripsi <b>PBKDF2 SHA-256 + Salt</b>. Password tidak disimpan dalam bentuk teks — hanya hash kriptografis yang tersimpan di sistem.
                 </p>
                 {DEMO_ACCOUNTS.map((acc) => (
                   <button
@@ -160,7 +160,7 @@ export default function LoginGate({ onLogin, initialMessage, onCancel }: LoginGa
                       />
                       <span className="text-sm font-bold text-gray-800">{ROLES[acc.role].label}</span>
                     </div>
-                    <span className="text-xs text-gray-500 font-mono font-semibold">{acc.username} / {acc.password}</span>
+                    <span className="text-xs text-gray-500 font-mono font-semibold">@{acc.username}</span>
                   </button>
                 ))}
               </div>

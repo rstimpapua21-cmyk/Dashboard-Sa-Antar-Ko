@@ -103,15 +103,15 @@ src/
 └── index.css              # Global styles + Tailwind
 ```
 
-## 🔐 Default Credentials (Demo)
+## 🔐 Akun Bawaan
 
-| Username | Password     | Role    | Unit                  |
-|----------|--------------|---------|-----------------------|
-| admin    | Admin@2025   | Admin   | Direktur RS           |
-| medis    | Medis@2025   | Medis   | Instalasi Rawat Inap  |
-| petugas  | Petugas@2025 | Petugas | Rekam Medis           |
+| Username | Role    | Unit                  |
+|----------|---------|-----------------------|
+| admin    | Admin   | Direktur RS           |
+| medis    | Medis   | Instalasi Rawat Inap  |
+| petugas  | Petugas | Rekam Medis           |
 
-⚠️ **Penting**: Ganti password default setelah deployment pertama!
+⚠️ **Penting**: Password bawaan **tidak ditampilkan di source code** — hanya hash SHA-256 + Salt yang tersimpan. Password dikomunikasikan melalui jalur secure terpisah. Ganti password setelah deployment pertama!
 
 ## 📊 Sumber Data
 
