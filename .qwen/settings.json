@@ -5,7 +5,9 @@
       "Bash(gh *)",
       "Bash(node *)",
       "Bash(npm install)",
-      "Bash(npm run *)"
+      "Bash(npm run *)",
+      "Bash(dir *)",
+      "Bash(type *)"
     ]
   },
   "$version": 4
