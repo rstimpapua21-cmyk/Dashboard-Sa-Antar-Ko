@@ -10,7 +10,8 @@
       "Bash(type *)",
       "Bash(timeout *)",
       "Bash(curl *)",
-      "Bash(powershell *)"
+      "Bash(powershell *)",
+      "Bash(copy *)"
     ]
   },
   "$version": 4
