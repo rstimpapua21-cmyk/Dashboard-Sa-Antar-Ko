@@ -757,9 +757,9 @@ export default function App() {
               <Stethoscope className="text-white" size={22} />
             </div>
             <div>
-              <h1 className={`font-bold text-lg leading-tight ${darkMode ? "text-white" : "text-slate-900"}`}>Dashboard Pasien Pulang</h1>
+              <h1 className={`font-bold text-lg leading-tight ${darkMode ? "text-white" : "text-slate-900"}`}>Dashboard Sa Antar Ko</h1>
               <p className={`text-xs flex items-center gap-1.5 ${darkMode ? "text-blue-200" : "text-blue-600"}`}>
-                Dokumen Kepulangan Pasien • RS Timika
+                Dokumen Kepulangan Pasien • RSUD Mimika
                 <span className={`hidden sm:inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-medium border ${darkMode ? "bg-blue-500/15 text-blue-100 border-blue-400/20" : "bg-blue-50 text-blue-700 border-blue-200"}`}>
                   {isPublic ? <><ShieldCheck size={9} /> Publik</> : <><Lock size={9} /> {ROLES[role].short}</>}
                 </span>
