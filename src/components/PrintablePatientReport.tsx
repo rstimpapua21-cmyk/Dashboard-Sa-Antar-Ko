@@ -65,7 +65,7 @@ export default function PrintablePatientReport({
                 UNIT PELAYANAN KESEHATAN RAWAT INAP TERINTEGRASI
               </p>
               <p className="text-xs text-gray-600 mt-0.5 font-medium">
-                Jl. Rumah Sakit SP 2, Mimika, Papua Tengah 99910 • Telp: (0901) 321890
+                Jl. Yos Sudarso, Mimika, Papua Tengah 99910 • Telp: (0901) 3125200
               </p>
             </div>
           </div>
@@ -192,7 +192,7 @@ export default function PrintablePatientReport({
             <FileText size={14} className="text-yellow-700" /> Catatan Tambahan / Instruksi Perawatan:
           </p>
           <p className="text-xs text-gray-700 leading-relaxed min-h-[36px]">
-            1. Pasien diwajibkan membawa surat kontrol dan hasil pemeriksaan penunjang saat melakukan kunjungan ulang ke Poliklinik RSUD Timika. <br />
+            1. Pasien diwajibkan membawa surat kontrol dan hasil pemeriksaan penunjang saat melakukan kunjungan ulang ke Poliklinik RSUD Mimika. <br />
             2. Obat-obatan harap dikonsumsi sesuai aturan dan dosis yang telah diedukasikan oleh apoteker/perawat ruangan.
           </p>
         </div>
@@ -232,7 +232,7 @@ export default function PrintablePatientReport({
 
         {/* Footer info cetak */}
         <div className="mt-12 pt-4 border-t border-gray-300 flex items-center justify-between text-[10px] text-gray-500 font-mono">
-          <span>Dicetak otomatis dari Sistem Dokumen Pasien Pulang RSUD Timika</span>
+          <span>Dicetak otomatis dari Sistem Dokumen Pasien Pulang RSUD Mimika</span>
           <span>Waktu Cetak: {new Date().toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" })}</span>
         </div>
       </div>
