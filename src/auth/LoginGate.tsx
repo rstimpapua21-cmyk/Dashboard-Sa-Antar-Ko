@@ -58,8 +58,8 @@ export default function LoginGate({ onLogin, initialMessage, onCancel }: LoginGa
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-700 shadow-xl mb-3">
             <Shield className="text-white" size={30} />
           </div>
-          <h1 className="text-white text-xl font-bold">Dashboard Pasien Pulang</h1>
-          <p className="text-blue-200/80 text-sm">Sistem Terproteksi • RS Timika</p>
+          <h1 className="text-white text-xl font-bold">Dashboard Sa Antar Ko</h1>
+          <p className="text-blue-200/80 text-sm">Sistem Terproteksi • RSUD Mimika</p>
         </div>
 
         {/* Login card */}
