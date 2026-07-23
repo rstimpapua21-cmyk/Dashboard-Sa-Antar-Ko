@@ -10,7 +10,7 @@ import json
 from io import StringIO
 from datetime import datetime
 
-SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSv31iXfAkwY8c6Tsi9MvvT1ABR8hxQlI-3rmTCYC9z98D4NklxzocQD2o5AmBvjE25qxYMsQTY36qE/pub?gid=965791667&single=true&output=csv'
+SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTIgvTkNXKi7oucoWOwaPILA171fXQIjr4vmAKyqIr78El6yUXjy4ThcglzszbhSp9hwzEHiHsH50ll/pub?gid=1182304110&single=true&output=csv'
 
 def fetch_data():
     """Download data dari Google Sheets"""

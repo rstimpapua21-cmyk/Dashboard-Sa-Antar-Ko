@@ -21,7 +21,7 @@ export interface Patient {
 
 // Published Google Sheet (CSV export) — realtime source
 export const CSV_URL =
-  "https://docs.google.com/spreadsheets/d/e/2PACX-1vSv31iXfAkwY8c6Tsi9MvvT1ABR8hxQlI-3rmTCYC9z98D4NklxzocQD2o5AmBvjE25qxYMsQTY36qE/pub?gid=965791667&single=true&output=csv";
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vTIgvTkNXKi7oucoWOwaPILA171fXQIjr4vmAKyqIr78El6yUXjy4ThcglzszbhSp9hwzEHiHsH50ll/pub?gid=1182304110&single=true&output=csv";
 
 // Master list of checklist items (canonical labels used for compliance tracking)
 export const CHECKLIST_ALL = [

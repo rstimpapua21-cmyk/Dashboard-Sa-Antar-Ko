@@ -19,7 +19,7 @@ export const CREDENTIALS_GID = 0;
 
 // Same published spreadsheet, different tab gid
 const CREDENTIALS_BASE_URL =
-  "https://docs.google.com/spreadsheets/d/e/2PACX-1vSv31iXfAkwY8c6Tsi9MvvT1ABR8hxQlI-3rmTCYC9z98D4NklxzocQD2o5AmBvjE25qxYMsQTY36qE/pub";
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vTIgvTkNXKi7oucoWOwaPILA171fXQIjr4vmAKyqIr78El6yUXjy4ThcglzszbhSp9hwzEHiHsH50ll/pub";
 
 export const CREDENTIALS_CSV_URL =
   `${CREDENTIALS_BASE_URL}?gid=${CREDENTIALS_GID}&single=true&output=csv`;

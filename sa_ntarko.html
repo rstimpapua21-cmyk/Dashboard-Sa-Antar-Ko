@@ -31153,7 +31153,7 @@
         let allData = [];
         let filteredData = [];
         let charts = {};
-        const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSv31iXfAkwY8c6Tsi9MvvT1ABR8hxQlI-3rmTCYC9z98D4NklxzocQD2o5AmBvjE25qxYMsQTY36qE/pub?gid=965791667&single=true&output=csv';
+        const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTIgvTkNXKi7oucoWOwaPILA171fXQIjr4vmAKyqIr78El6yUXjy4ThcglzszbhSp9hwzEHiHsH50ll/pub?gid=1182304110&single=true&output=csv';
         const REFRESH_INTERVAL = 30000; // 30 seconds for more real-time updates
         let autoRefreshTimer = null;
 
@@ -31224,7 +31224,7 @@
 
         async function fetchData() {
             // PRIORITY 1: Try live Google Sheets fetch (real-time data)
-            const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSv31iXfAkwY8c6Tsi9MvvT1ABR8hxQlI-3rmTCYC9z98D4NklxzocQD2o5AmBvjE25qxYMsQTY36qE/pub?gid=965791667&single=true&output=csv';
+            const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTIgvTkNXKi7oucoWOwaPILA171fXQIjr4vmAKyqIr78El6yUXjy4ThcglzszbhSp9hwzEHiHsH50ll/pub?gid=1182304110&single=true&output=csv';
 
             try {
                 const response = await fetch(csvUrl, { mode: 'cors' });

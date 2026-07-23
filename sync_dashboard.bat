@@ -13,7 +13,7 @@ echo.
 
 REM Step 1: Download data
 echo [1/3] Downloading data dari Google Sheets...
-powershell -Command "try { $response = Invoke-WebRequest -Uri 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSv31iXfAkwY8c6Tsi9MvvT1ABR8hxQlI-3rmTCYC9z98D4NklxzocQD2o5AmBvjE25qxYMsQTY36qE/pub?gid=965791667&single=true&output=csv' -UseBasicParsing -TimeoutSec 30; $response.Content | Out-File -FilePath 'data.csv' -Encoding UTF8; Write-Host 'Downloaded' $response.Content.Length 'bytes' } catch { Write-Host 'Error:' $_.Exception.Message; exit 1 }"
+powershell -Command "try { $response = Invoke-WebRequest -Uri 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTIgvTkNXKi7oucoWOwaPILA171fXQIjr4vmAKyqIr78El6yUXjy4ThcglzszbhSp9hwzEHiHsH50ll/pub?gid=1182304110&single=true&output=csv' -UseBasicParsing -TimeoutSec 30; $response.Content | Out-File -FilePath 'data.csv' -Encoding UTF8; Write-Host 'Downloaded' $response.Content.Length 'bytes' } catch { Write-Host 'Error:' $_.Exception.Message; exit 1 }"
 
 if %ERRORLEVEL% NEQ 0 (
     echo.
